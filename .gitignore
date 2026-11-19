@@ -1,0 +1,30 @@
+# 编译产物
+build/
+*.bin
+*.elf
+*.map
+*.hex
+*.o
+*.d
+*.fw
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 日志
+*.log
+
+# IDE / 编辑器
+.vscode/
+.idea/
+*.swp
+*~
+
+# 本机路径配置（换电脑会不同）
+config/toolchain_path.txt
+config/openocd_path.txt
+
+# ESP-IDF 生成的依赖目录
+esp32_s3/managed_components/
+esp32_s3/dependencies.lock

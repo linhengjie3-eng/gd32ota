@@ -1,0 +1,16 @@
+idf_component_register(
+    SRCS
+        "ota_gateway.c"
+        "ota_protocol.c"
+    INCLUDE_DIRS
+        "."
+    REQUIRES
+        esp_wifi
+        esp_netif
+        esp_event
+        esp_http_client
+        nvs_flash
+        driver
+        json
+        esp_timer
+)

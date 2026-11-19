@@ -1,0 +1,78 @@
+menu "GD32 OTA Gateway"
+
+config OTA_WIFI_SSID
+    string "Wi-Fi SSID"
+    default "YOUR_WIFI_SSID"
+    help
+        2.4GHz Wi-Fi SSID (ESP32-S3 不支持 5GHz)。
+
+config OTA_WIFI_PASSWORD
+    string "Wi-Fi password"
+    default "YOUR_WIFI_PASSWORD"
+
+config OTA_MANIFEST_URL
+    string "Firmware manifest URL"
+    default "http://192.168.1.10:8000/manifest.json"
+    help
+        由 tools/fwpack.py 生成, 内含版本号和 A/B 两个槽的 .fw 文件名。
+
+config OTA_FIRMWARE_BASE_URL
+    string "Firmware base URL (must end with /)"
+    default "http://192.168.1.10:8000/"
+    help
+        与 manifest.json 中的 packages.A / packages.B 文件名拼接成完整 URL。
+
+config OTA_REPORT_URL
+    string "Result report URL (optional, empty disables)"
+    default ""
+    help
+        升级结束后 POST 一个 JSON 结果; 留空则只打印日志。
+
+config OTA_UART_TX_GPIO
+    int "UART TX GPIO (to GD32 USART1_RX / PA3)"
+    default 17
+
+config OTA_UART_RX_GPIO
+    int "UART RX GPIO (to GD32 USART1_TX / PA2)"
+    default 18
+
+config OTA_UART_BAUD
+    int "UART baudrate (must match GD32)"
+    default 115200
+
+config OTA_UART_PORT
+    int "ESP32-S3 UART port number"
+    default 1
+    range 0 2
+
+config OTA_POLL_INTERVAL_MS
+    int "Version poll interval (ms)"
+    default 2000
+
+config OTA_HTTP_TIMEOUT_MS
+    int "HTTP timeout (ms)"
+    default 30000
+
+config OTA_ACK_TIMEOUT_MS
+    int "GD32 ACK timeout (ms)"
+    default 3000
+
+config OTA_MAX_RETRIES
+    int "Max retransmit per packet"
+    default 6
+
+config OTA_AUTO_PUSH
+    bool "Automatically push firmware when GD32 enters Boot upgrade mode"
+    default y
+    help
+        关闭后仅做版本查询/应答, 需由外部调用 ota_gateway_request_update() 触发。
+
+config OTA_ALLOW_DOWNGRADE
+    bool "Allow OTA downgrade (demo only)"
+    default n
+    help
+        打开后网关会推送任何与设备运行版本不同的包（含更低版本），
+        用于反复演示 A/B 升降级。GD32 Boot 也必须用
+        python tools/build.py --allow-downgrade boot 重编后才能接受降级。
+
+endmenu
